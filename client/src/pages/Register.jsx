@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
+import axios from "axios"
 
 
 
@@ -14,11 +15,8 @@ export default function Register() {
     const registerUser= (e)=>{
         e.preventDefault()
 
-         // Serialize form data
-        const formData = new FormData(this);
-
   // Send HTTP POST request to backend using Axios
-        axios.post('/user/register', formData)
+        axios.post('/user/register',data)
             .then(response => {
                 console.log('Response from server:', response.data);
       // Handle response as needed
