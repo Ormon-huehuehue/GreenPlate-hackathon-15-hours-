@@ -12,8 +12,22 @@ export default function Register() {
     })
 
     const registerUser= (e)=>{
-        e.preventDefualt()
-    }
+        e.preventDefault()
+
+         // Serialize form data
+        const formData = new FormData(this);
+
+  // Send HTTP POST request to backend using Axios
+        axios.post('/user/register', formData)
+            .then(response => {
+                console.log('Response from server:', response.data);
+      // Handle response as needed
+            })
+            .catch(error => {
+                console.error('Error:', error);
+      // Handle error
+            });
+        }
 
 
 

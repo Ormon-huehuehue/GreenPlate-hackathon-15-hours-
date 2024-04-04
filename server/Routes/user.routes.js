@@ -1,16 +1,23 @@
 import {Router} from "express"
 const router = Router();
 
-
-import { test } from "../Controllers/user.controller.js";
-import { verifyJWT } from "../Middlewares/auth.middleware.js";
+import {registerUser,
+loginUser,
+logoutUser
+} from "../Controllers/user.controller.js"
 
 
 //middlewares
+import { verifyJWT } from "../Middlewares/auth.middleware.js";
+
  
 
 
-router.route("/test").get(test)
+router.route('/register').post(registerUser)
+
+router.route('/login').post(loginUser)
+
+router.route('/logout').post(verifyJWT, logoutUser);
 
 
 
