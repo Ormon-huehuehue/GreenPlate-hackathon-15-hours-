@@ -2,6 +2,28 @@ import {User} from "../Models/user.model.js"
 import jwt from "jsonwebtoken"
 import mongoose from "mongoose"
 
+const generateAccessAndRefreshTokens = async(userId)=>{
+    try{
+        const user = await User.findById(userId)
+        //generateAccessToken and refresh token are methods and hence they end with ()
+        const accessToken = user.generateAccessToken();
+        const refreshToken = user.generateRefreshToken();
+
+        //refresh tokens are saved in database unlike access tokens
+        user.refreshToken = refreshToken 
+
+        //validateBeforeSave is used to skip the presence of certain field set to "required:true" while defining the mongoose models
+        await user.save({validateBeforeSave :false})
+
+        return {accessToken,refreshToken}
+
+
+    }catch(error){
+        throw new Error("Something went wrong while generating refresh and access tokens")
+    }
+
+}
+
 const registerUser = async(req, res) =>{
     try{
         const {name,email,password} = req.body;
@@ -16,8 +38,8 @@ const registerUser = async(req, res) =>{
 
         //check if the user already exists
 
-        const userExists = await User.findOne({email})
         try {
+        const userExists = await User.findOne({email})
             if(userExists){
                 return res.status(400).json({
                     message:"Username with the same email already exists"
@@ -56,9 +78,63 @@ const registerUser = async(req, res) =>{
     }
 }
 
-const loginUser = ()=>{
+
+
+
+const loginUser = async(req,res)=>{
+    const {email, password} = req.body
+    console.log(req.body)
+
+    try {
+        const user = await User.findOne({email})
+    
+        if(!user){
+            res.json({
+                message:"User doesn't exist"
+            })
+        }
+    } catch (error) {
+        throw new Error("Server error while checking for user")
+        
+    }
+
+    try {
+        const isPasswordValid = await user.isPasswordCorrect(password);
+    
+        if(!isPasswordValid){
+            res.json({
+                message:"Invalid password"
+            })
+        }
+    } catch (error) {
+        throw new Error("Error while checking if the password is valid")   
+    }
+
+    const {accessToken,refreshToken}= await generateAccessAndRefreshTokens(user._id)
+
+    const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
+
+    console.log(loggedInUser)
+
+    const options={
+        //these two settings make sure that the cookies are only modifiable through the backend
+        httpOnly:true,
+        secure:true
+    }
+
+    console.log("User logged in successfully")
+
+    return res
+    .status(200)
+    .cookie("accessToken",accessToken,options)
+    .cookie("refreshToken",refreshToken,options)
+    .json({message:"User logged in successfully"})
+
 
 }
+
+
+
 const logoutUser = ()=>{
 
 }
