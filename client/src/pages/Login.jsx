@@ -26,11 +26,11 @@ export default function Login() {
             <div className="login-card">
                 <h1>Sign In</h1>
                 <form onSubmit = {loginUser}>
-                <label>Email</label>
-            <input type= "email" placeholder = "Enter your email" value = {data.email} onChange={(e)=> setData({...data,email:e.target.value})}></input>
-            <label>Password</label>
-            <input type = "password" placeholder = "Enter your password" value = {data.password} onChange = {(e)=> setData({...data,password:e.target.value})}></input><br/>
-            <button type= "submit">Submit</button>
+                    <label>Email</label><br/>
+                    <input type= "email" placeholder = "Enter your email" value = {data.email} onChange={(e)=> setData({...data,email:e.target.value})} /><br/>
+                    <label>Password</label><br/>
+                    <input type = "password" placeholder = "Enter your password" value = {data.password} onChange = {(e)=> setData({...data,password:e.target.value})} /><br/>
+                    <button type= "submit">Submit</button>
                 </form>
             </div>
         </div>
