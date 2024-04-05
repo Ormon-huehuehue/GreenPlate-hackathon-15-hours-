@@ -81,11 +81,12 @@ const registerUser = async(req, res) =>{
 
 
 
-const loginUser = async(req,res)=>{
+const 
+loginUser = async(req,res)=>{
     const {email, password} = req.body
     console.log(req.body)
 
-    try {
+
         const user = await User.findOne({email})
     
         if(!user){
@@ -93,22 +94,16 @@ const loginUser = async(req,res)=>{
                 message:"User doesn't exist"
             })
         }
-    } catch (error) {
-        throw new Error("Server error while checking for user")
-        
-    }
 
-    try {
-        const isPasswordValid = await user.isPasswordCorrect(password);
+
+    const isPasswordValid = await user.isPasswordCorrect(password);
     
         if(!isPasswordValid){
             res.json({
                 message:"Invalid password"
             })
         }
-    } catch (error) {
-        throw new Error("Error while checking if the password is valid")   
-    }
+    
 
     const {accessToken,refreshToken}= await generateAccessAndRefreshTokens(user._id)
 
