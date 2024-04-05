@@ -1,4 +1,5 @@
 import {User} from "../Models/user.model.js"
+import {Product} from "../Models/product.model.js"
 import jwt from "jsonwebtoken"
 import mongoose from "mongoose"
 
@@ -152,4 +153,28 @@ const logoutUser= async(req,res)=>{
     .json("User logged out")
 }
 
-export {registerUser, loginUser, logoutUser};
+const addProduct = async (req, res) => {
+    try {
+        const { title, description, price } = req.body;
+        //verifyJWT middleware provides the user's id in the req.user object
+        const userId = req.user.id; 
+
+        // Create a new product
+        const product = new Product({
+            title,
+            description,
+            price
+        });
+
+        // Save the product to the database
+        await product.save();
+        
+        const user = await User.findByIdAndUpdate(userId, { $push: { products: product._id } }, { new: true });
+
+        res.status(200).json({ message: "Product added to user successfully", user });
+    } catch (error) {
+        res.status(500).json({ error: "Failed to add product to user", message: error.message });
+    }
+};
+
+export {registerUser, loginUser, logoutUser,addProduct};
