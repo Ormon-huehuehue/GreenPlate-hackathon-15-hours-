@@ -5,9 +5,12 @@ import mongoose from "mongoose"
 const generateAccessAndRefreshTokens = async(userId)=>{
     try{
         const user = await User.findById(userId)
+        console.log("user found")
         //generateAccessToken and refresh token are methods and hence they end with ()
         const accessToken = user.generateAccessToken();
         const refreshToken = user.generateRefreshToken();
+
+        console.log("tokens generated")
 
         //refresh tokens are saved in database unlike access tokens
         user.refreshToken = refreshToken 
@@ -81,22 +84,27 @@ const registerUser = async(req, res) =>{
 
 
 
-const 
-loginUser = async(req,res)=>{
-    const {email, password} = req.body
-    console.log(req.body)
-
-
-        const user = await User.findOne({email})
+const loginUser = async(req,res)=>{
+        const {email, password} = req.body
     
+    
+        if(!email){
+            res.json({
+                message:"Username or Email is required"
+            })
+        }
+    
+        const user =await User.findOne({email})
+    
+
         if(!user){
             res.json({
                 message:"User doesn't exist"
             })
         }
-
-
-    const isPasswordValid = await user.isPasswordCorrect(password);
+    
+        const isPasswordValid = await user.isPasswordCorrect(password);
+        console.log("password correct")
     
         if(!isPasswordValid){
             res.json({
@@ -104,33 +112,44 @@ loginUser = async(req,res)=>{
             })
         }
     
+        const {accessToken,refreshToken}= await generateAccessAndRefreshTokens(user._id)
+    
+        const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
+    
+        console.log(loggedInUser)
 
-    const {accessToken,refreshToken}= await generateAccessAndRefreshTokens(user._id)
+        const options={
+            //these two settings make sure that the cookies are only modifiable through the backend
+            httpOnly:true,
+            secure:true
+        }
+    
+        return res
+        .status(200)
+        .cookie("accessToken",accessToken,options)
+        .cookie("refreshToken",refreshToken,options)
+        .json("User logged in")
+    
+}
 
-    const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
 
-    console.log(loggedInUser)
 
-    const options={
-        //these two settings make sure that the cookies are only modifiable through the backend
-        httpOnly:true,
+
+const logoutUser= async(req,res)=>{
+    await User.findByIdAndUpdate(req.user._id,{
+        $set: {refreshToken:undefined }
+    })
+
+    const options= {
+        httpsOnly:true,
         secure:true
     }
 
-    console.log("User logged in successfully")
-
     return res
     .status(200)
-    .cookie("accessToken",accessToken,options)
-    .cookie("refreshToken",refreshToken,options)
-    .json({message:"User logged in successfully"})
-
-
+    .clearCookie("accessToken",options)
+    .clearCookie("refreshToken",options)
+    .json("User logged out")
 }
 
-
-
-const logoutUser = ()=>{
-
-}
 export {registerUser, loginUser, logoutUser};

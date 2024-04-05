@@ -4,7 +4,7 @@ import { User } from '../Models/user.model.js'
 export const verifyJWT = async(req,res,next)=>{
     try{
         const token = req.cookies?.accessToken;
-        const decodedToken = jwt.verify(token,process.env.accessToken)
+        const decodedToken = jwt.verify(token,process.env.ACCESS_TOKEN_SECRET)
 
         const user= await User.findById(decodedToken._id).select("-password -refreshToken")
 
