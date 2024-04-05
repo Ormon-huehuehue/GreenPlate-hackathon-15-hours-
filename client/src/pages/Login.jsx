@@ -17,7 +17,7 @@ export default function Login() {
   return (
     // <div>
     //     <div>
-    //         <form onSubmit = {loginUser}>
+    //         <form >
     //         <label>Email</label>
     //         <input type = "email" placeholder = "Enter your email" value = {data.email} onChange={(e)=>setData({...data,email:e.target.value})}></input>
     //         <label>Password</label>
@@ -30,20 +30,20 @@ export default function Login() {
         <div className="container">
             <div className="login-card">
                 <h1>Sign In</h1>
-                <form>
+                <form onSubmit = {loginUser}>
                     <label htmlFor="email"><br />
                         Email:
                     </label><br />
-                    <input type="text" name="email" placeholder="Email" />
+                    <input type="text" name="email" placeholder="Email" /><br/>
                     
                     <label htmlFor="password"><br />
                         Password:
-                        <input type="password" name="password" placeholder="Password"/>
-                    </label>
+                    </label><br />
+                    <input type="password" name="password" placeholder="Password"/><br/>
                     <button type="submit">Sign In</button>
                 </form>
+                <p>Don't have an account? <a href="#">Create Account</a></p>
             </div>
-            <p>Don't have an account? <a href="#">Create Account</a></p>
         </div>
     )
   

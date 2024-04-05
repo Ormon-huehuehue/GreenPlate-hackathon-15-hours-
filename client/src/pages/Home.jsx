@@ -1,7 +1,11 @@
-import React from 'react'
+import Body from '../components/Body'
+import Free from '../components/freetrial'
 
 export default function Home() {
   return (
-    <div>Home</div>
+    <div>
+        <Body />
+        <Free />
+    </div>
   )
 }
