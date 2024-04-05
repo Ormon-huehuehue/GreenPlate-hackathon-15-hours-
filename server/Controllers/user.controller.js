@@ -168,7 +168,7 @@ const addProduct = async (req, res) => {
 
         // Save the product to the database
         await product.save();
-        
+
         const user = await User.findByIdAndUpdate(userId, { $push: { products: product._id } }, { new: true });
 
         res.status(200).json({ message: "Product added to user successfully", user });
@@ -177,4 +177,30 @@ const addProduct = async (req, res) => {
     }
 };
 
-export {registerUser, loginUser, logoutUser,addProduct};
+const addToCart = async (req, res) => {
+    try {
+        const productId = req.body.productId;
+        const userId = req.user.id; // Assuming you have implemented authentication middleware
+
+        // Find the user by ID
+        const user = await User.findById(userId);
+
+        // Check if the product exists
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).json({ error: "Product not found" });
+        }
+
+        // Add the product ID to the user's cart
+        user.cart.push(productId);
+
+        // Save the updated user
+        await user.save();
+
+        res.status(200).json({ message: "Product added to cart successfully", user });
+    } catch (error) {
+        res.status(500).json({ error: "Failed to add product to cart", message: error.message });
+    }
+};
+
+export {registerUser, loginUser, logoutUser,addProduct,addToCart};
