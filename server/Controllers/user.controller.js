@@ -177,10 +177,22 @@ const addProduct = async (req, res) => {
     }
 };
 
+const listAvailableProducts = async(req,res)=>{
+    try{
+        const productList = await Product.find();
+        console.log(productList)
+        res.send(productList)
+    }catch{
+        throw new Error("Error occured while fetching the product list")
+    }
+}
+
 const addToCart = async (req, res) => {
     try {
-        const productId = req.body.productId;
-        const userId = req.user.id; // Assuming you have implemented authentication middleware
+        const productId = req.params.productId;
+        const userId = req.user.id;
+        
+        console.log(`productId:${productId}`)
 
         // Find the user by ID
         const user = await User.findById(userId);
@@ -203,4 +215,6 @@ const addToCart = async (req, res) => {
     }
 };
 
-export {registerUser, loginUser, logoutUser,addProduct,addToCart};
+
+
+export {registerUser, loginUser, logoutUser,addProduct,addToCart,listAvailableProducts};

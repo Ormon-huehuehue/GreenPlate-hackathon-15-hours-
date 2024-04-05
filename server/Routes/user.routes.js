@@ -5,7 +5,8 @@ import {registerUser,
 loginUser,
 logoutUser,
 addProduct,
-addToCart
+addToCart,
+listAvailableProducts
 } from "../Controllers/user.controller.js"
 
 
@@ -23,7 +24,9 @@ router.route('/logout').post(verifyJWT, logoutUser);
 
 router.route('/addProduct').post(verifyJWT, addProduct)
 
-router.route('/addToCart').post(verifyJWT, addToCart)
+router.route('/addToCart/:productId').post(verifyJWT, addToCart)
+
+router.route("/listProducts").get(listAvailableProducts)
 
 
 
