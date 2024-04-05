@@ -1,4 +1,14 @@
+body {
+  background-image: url("assets\pexels-zaksheuskaya-1616403.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+  font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+  color: white;
+}
 .navbar{
+  max-width: 100%;
+  background: linear-gradient(to bottom, #8f00af, #cf79e2);
+  color : white;
   display: flex;
   justify-content: space-between;
   padding-right: 15px;
@@ -14,8 +24,11 @@
   border-radius: 5%;
   padding: 10px;
   border: none;
+  background-color: purple;
+}
+.navbar #contact-us a{
   text-decoration: none;
-  color: black;
+  color: white;
 }
 .links{
   display: flex;
@@ -26,7 +39,7 @@
 }
 .links a{
   text-decoration: none;
-  color: black;
+  color: white;
 }
 .body-text{
   padding-top: 20px;
@@ -54,10 +67,21 @@
   padding-bottom: 20vh;
 }
 .container .login-card{
-  padding : 30px;
-  background-color: lightgray;
+  width: 296px;
+  position: relative;
+  backdrop-filter: blur(5px);
   border-radius: 10%;
   text-align: center;
+}
+.container .login-card input{
+  border: 2px solid #e8e8e8;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: #212121;
+  font-size: 1em;
+  letter-spacing: 0.05em;
+  transition: 0.5s;
+  z-index: 10;
 }
 .free-trial{
   margin-top: 200px;
@@ -90,7 +114,17 @@
   justify-content: center;
   align-items: center;
   padding : 60px;
-  background-color: lightgray;
+  backdrop-filter: blur(5px);
   border-radius: 10%;
   text-align: center;
+}
+.register-container .register-card input{
+  border: 2px solid #e8e8e8;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: #212121;
+  font-size: 1em;
+  letter-spacing: 0.05em;
+  transition: 0.5s;
+  z-index: 10;
 }
