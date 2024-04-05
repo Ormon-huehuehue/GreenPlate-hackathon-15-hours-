@@ -1,6 +1,6 @@
 import mongoose,{Schema} from "mongoose"
 
-const subscriptionSchema = new Schema({
+const productSchema = new Schema({
     title:{
         type:String,
         required:true,
@@ -9,12 +9,18 @@ const subscriptionSchema = new Schema({
     description:{
         type:String
     },
-    owner:[{
+    price:{
+        type:Number,
+        required:true
+    },
+    owner:{
         type:Schema.Types.ObjectId,
         ref:"User"
-    }]
-
+    }
 },{timestamps:true})
 
 
-export const Subscription = mongoose.model("Subscription",subscriptionSchema)
+
+
+
+export const Product = mongoose.model("Product",productSchema)

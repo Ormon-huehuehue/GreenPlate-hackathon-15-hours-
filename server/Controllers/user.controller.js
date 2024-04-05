@@ -1,4 +1,5 @@
 import {User} from "../Models/user.model.js"
+import {Product} from "../Models/product.model.js"
 import jwt from "jsonwebtoken"
 import mongoose from "mongoose"
 
@@ -152,4 +153,68 @@ const logoutUser= async(req,res)=>{
     .json("User logged out")
 }
 
-export {registerUser, loginUser, logoutUser};
+const addProduct = async (req, res) => {
+    try {
+        const { title, description, price } = req.body;
+        //verifyJWT middleware provides the user's id in the req.user object
+        const userId = req.user.id; 
+
+        // Create a new product
+        const product = new Product({
+            title,
+            description,
+            price
+        });
+
+        // Save the product to the database
+        await product.save();
+
+        const user = await User.findByIdAndUpdate(userId, { $push: { products: product._id } }, { new: true });
+
+        res.status(200).json({ message: "Product added to user successfully", user });
+    } catch (error) {
+        res.status(500).json({ error: "Failed to add product to user", message: error.message });
+    }
+};
+
+const listAvailableProducts = async(req,res)=>{
+    try{
+        const productList = await Product.find();
+        console.log(productList)
+        res.send(productList)
+    }catch{
+        throw new Error("Error occured while fetching the product list")
+    }
+}
+
+const addToCart = async (req, res) => {
+    try {
+        const productId = req.params.productId;
+        const userId = req.user.id;
+        
+        console.log(`productId:${productId}`)
+
+        // Find the user by ID
+        const user = await User.findById(userId);
+
+        // Check if the product exists
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).json({ error: "Product not found" });
+        }
+
+        // Add the product ID to the user's cart
+        user.cart.push(productId);
+
+        // Save the updated user
+        await user.save();
+
+        res.status(200).json({ message: "Product added to cart successfully", user });
+    } catch (error) {
+        res.status(500).json({ error: "Failed to add product to cart", message: error.message });
+    }
+};
+
+
+
+export {registerUser, loginUser, logoutUser,addProduct,addToCart,listAvailableProducts};

@@ -23,7 +23,15 @@ const userSchema = new Schema({
     },
     refreshToken:{
         type:String
-    }
+    },
+    products:[{
+        type:Schema.Types.ObjectId,
+        ref:"Product"
+    }],
+    cart:[{
+        type:Schema.Types.ObjectId,
+        ref:"Product"
+    }]
 },{timestamps:true})
 
 userSchema.pre("save",async function(next){

@@ -3,7 +3,10 @@ const router = Router();
 
 import {registerUser,
 loginUser,
-logoutUser
+logoutUser,
+addProduct,
+addToCart,
+listAvailableProducts
 } from "../Controllers/user.controller.js"
 
 
@@ -18,6 +21,12 @@ router.route('/register').post(registerUser)
 router.route('/login').post(loginUser)
 
 router.route('/logout').post(verifyJWT, logoutUser);
+
+router.route('/addProduct').post(verifyJWT, addProduct)
+
+router.route('/addToCart/:productId').post(verifyJWT, addToCart)
+
+router.route("/listProducts").get(listAvailableProducts)
 
 
 
