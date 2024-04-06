@@ -24,7 +24,7 @@ router.route('/logout').post(verifyJWT, logoutUser);
 
 router.route('/addProduct').post(verifyJWT, addProduct)
 
-router.route('/addToCart/:productId').post(verifyJWT, addToCart)
+router.route('/addToCart/:title').post(verifyJWT, addToCart)
 
 router.route("/listProducts").get(listAvailableProducts)
 

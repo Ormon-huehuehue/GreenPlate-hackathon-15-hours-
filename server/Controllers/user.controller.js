@@ -166,8 +166,12 @@ const addProduct = async (req, res) => {
             price
         });
 
+        
+
         // Save the product to the database
         await product.save();
+
+        
 
         const user = await User.findByIdAndUpdate(userId, { $push: { products: product._id } }, { new: true });
 
@@ -189,7 +193,9 @@ const listAvailableProducts = async(req,res)=>{
 
 const addToCart = async (req, res) => {
     try {
-        const productId = req.params.productId;
+        const title = req.body;
+
+        const productId = await Product.findOne({title:title}).select("_id");
         const userId = req.user.id;
         
         console.log(`productId:${productId}`)
