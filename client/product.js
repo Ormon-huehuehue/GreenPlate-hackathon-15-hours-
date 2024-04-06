@@ -21,3 +21,6 @@ fetch('http://localhost:8080/user/listProducts')
         });
     })
     .catch(error => console.error('Error fetching products:', error));
+
+
+   

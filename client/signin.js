@@ -23,6 +23,7 @@ document.querySelector('form').addEventListener('submit', function(event) {
             console.log(response.ok)
             // Redirect to the products page if login is successful
             window.location.href = 'Products.html';
+            alert("There is a possibility that you've entered the wrong password and you'll still got redirected to the products page. This is because the server is not yet set up to handle login errors. This will be fixed in the next section. ALSOOO THE SERVER CRASHES EVERYTIME YOU ENTER THE WRONG PASSWORD.PLEASE RELOAD TO GET TO BE ABLE TO LOGIN AGAIN.");
         } else {
             // Handle unsuccessful login here (e.g., display error message)
             console.error('Login failed');
