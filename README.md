@@ -1,4 +1,4 @@
-
+![download](https://github.com/Ormon-huehuehue/GreenPlate-hackathon-15-hours-/assets/120156766/cc4afed9-b109-4cc8-9f57-c93da74a73dd)
 
 Clone the repository: git clone 
 Install dependencies: npm i
@@ -34,8 +34,7 @@ http://localhost:8080/user/addToCart/661060191296e677df2fe0fb
 }
 
 
-
-
+![download](https://github.com/Ormon-huehuehue/GreenPlate-hackathon-15-hours-/assets/120156766/4199582d-ffa2-4775-9deb-7326e19fb290)
 
 
 
