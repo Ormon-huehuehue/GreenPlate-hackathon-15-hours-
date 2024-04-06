@@ -17,21 +17,7 @@ document.querySelector('form').addEventListener('submit', function(event) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(formData)
+    }).then(()=>{
+        window.location.href = 'Products.html';
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        // Handle success response
-        console.log('Response from backend:', data);
-        // Redirect to another page or display a success message, etc.
-    })
-    .catch(error => {
-        // Handle error
-        console.error('Error:', error);
-        // Display error message to the user, etc.
-    });
 });
