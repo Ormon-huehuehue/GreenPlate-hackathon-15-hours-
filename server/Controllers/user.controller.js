@@ -86,50 +86,59 @@ const registerUser = async(req, res) =>{
 
 
 const loginUser = async(req,res)=>{
-        const {email, password} = req.body
+        try {
+            const {email, password} = req.body
+        
+        
+            if(!email){
+                res.json({
+                    message:"Username or Email is required"
+                })
+            }
+        
+            const user =await User.findOne({email})
+        
     
+            if(!user){
+                res.json({
+                    message:"User doesn't exist"
+                })
+            }
+        
+            const isPasswordValid = await user.isPasswordCorrect(password);
+            console.log("password correct")
+        
+            if(!isPasswordValid){
+                res.json({
+                    message:"Invalid password"
+                })
+            }
+        
+            const {accessToken,refreshToken}= await generateAccessAndRefreshTokens(user._id)
+        
+            const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
+        
+            console.log(loggedInUser)
     
-        if(!email){
-            res.json({
-                message:"Username or Email is required"
-            })
+            const options={
+                //these two settings make sure that the cookies are only modifiable through the backend
+                httpOnly:true,
+                secure:true
+            }
+        
+            res
+            .status(200)
+            .cookie("accessToken",accessToken,options)
+            .cookie("refreshToken",refreshToken,options)
+            .json("User logged in")
+        } catch (error) {
+            res.status(500).json(
+                {
+                    message:"Login error"
+                }
+            )
+            
         }
-    
-        const user =await User.findOne({email})
-    
-
-        if(!user){
-            res.json({
-                message:"User doesn't exist"
-            })
-        }
-    
-        const isPasswordValid = await user.isPasswordCorrect(password);
-        console.log("password correct")
-    
-        if(!isPasswordValid){
-            res.json({
-                message:"Invalid password"
-            })
-        }
-    
-        const {accessToken,refreshToken}= await generateAccessAndRefreshTokens(user._id)
-    
-        const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
-    
-        console.log(loggedInUser)
-
-        const options={
-            //these two settings make sure that the cookies are only modifiable through the backend
-            httpOnly:true,
-            secure:true
-        }
-    
-        return res
-        .status(200)
-        .cookie("accessToken",accessToken,options)
-        .cookie("refreshToken",refreshToken,options)
-        .json("User logged in")
     
 }
 

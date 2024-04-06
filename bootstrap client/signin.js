@@ -1,4 +1,3 @@
-// Event listener for form submission
 document.querySelector('form').addEventListener('submit', function(event) {
     event.preventDefault(); // Prevent default form submission
 
@@ -17,7 +16,20 @@ document.querySelector('form').addEventListener('submit', function(event) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(formData)
-    }).then(()=>{
-        window.location.href = 'Products.html';
     })
+    .then(response => {
+        console.log(response.ok);
+        if (response.ok) {
+            console.log(response.ok)
+            // Redirect to the products page if login is successful
+            window.location.href = 'Products.html';
+        } else {
+            // Handle unsuccessful login here (e.g., display error message)
+            console.error('Login failed');
+        }
+    })
+    .catch(error => {
+        // Handle network errors or other exceptions here
+        console.error('Error:', error);
+    });
 });
