@@ -6,8 +6,7 @@ loginUser,
 logoutUser,
 addProduct,
 addToCart,
-listAvailableProducts,
-getUserInfo
+listAvailableProducts
 } from "../Controllers/user.controller.js"
 
 
@@ -29,7 +28,6 @@ router.route('/addToCart/:title').post(verifyJWT, addToCart)
 
 router.route("/listProducts").get(listAvailableProducts)
 
-router.route("/getUserInfo").get(verifyJWT, getUserInfo)
 
 
 

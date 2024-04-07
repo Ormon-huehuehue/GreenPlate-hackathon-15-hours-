@@ -230,13 +230,7 @@ const addToCart = async (req, res) => {
     }
 };
 
-const getUserInfo = async(req,res)=>{
-    try{
-        const user = await User.findById(req.user.id).select("name email cart")
-}catch(error){
-    res.status(500).json({error:"Failed to get user info", message:error.message})
-}
-}
 
 
-export {registerUser, loginUser, logoutUser,addProduct,addToCart,listAvailableProducts,getUserInfo};
+
+export {registerUser, loginUser, logoutUser,addProduct,addToCart,listAvailableProducts};
